@@ -4,9 +4,9 @@
   "description": "抽奖",
   "main": "index.js",
   "scripts": {
-    "start": "cd dist && node ../../server/index.js 8888",
+    "build": "webpack --mode production --entry ./src/lottery/index.js --output-path ./docs",
+    "start": "webpack-dev-server --mode development --entry ./src/lottery/index.js --output-path ./docs --open",
     "serve": "npm run start",
-    "build": "webpack --mode=production --progress --colors",
     "dev": "webpack-dev-server --config webpack.dev.js --mode=development --progress --colors"
   },
   "author": "moshang",
