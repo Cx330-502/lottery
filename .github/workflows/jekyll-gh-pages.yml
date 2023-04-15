@@ -1,26 +1,42 @@
-name: Build and Deploy to GitHub Pages
+name: Deploy to GitHub Pages
 
 on:
   push:
     branches:
-      - dev # 将“main”替换为您的默认分支
+      - master
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    env:
+      NODE_VERSION: 14.x
+      
     steps:
-      - name: Checkout
+      - name: Checkout code
         uses: actions/checkout@v2
-      - name: Setup Node.js
-        uses: actions/setup-node@v2
+      
+      - name: Set up Node.js
+        uses: actions/setup-node@v2-beta
         with:
-          node-version: '12.x'
-      - name: Install Dependencies
-        run: npm install
+          node-version: ${{ env.NODE_VERSION }}
+        
+      - name: Install dependencies
+        run: |
+          cd server
+          npm install
+      
+      - name: Install dependencies
+        run: |
+          cd ../product
+          npm install
+      
       - name: Build
-        run: npm run build
-      - name: Deploy
+        run: |
+          cd product
+          npm run build
+          
+      - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./docs
+          publish_dir: ./docx
